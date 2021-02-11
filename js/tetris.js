@@ -3,29 +3,31 @@ var canvas;
 var ctx;
 var FPS = 50;
 
+var anchoCanvas = 400;
+var altoCanvas = 640;
+
 var anchotablero = 10;
 var altoTablero = 16;
 
 var anchoF = 40;
 var altoF = 40;
 
-var anchoCanvas = 400;
-var altoCanvas = 640;
+
 
 
 var tablero = [
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,4,0,0,0,0,0,1],
+[1,0,0,0,0,2,0,0,0,0,0,1],
+[1,0,0,0,0,2,0,0,0,0,0,1],
+[1,0,0,0,0,3,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,2,0,0,0,0,0,0,1],
+[1,0,0,0,0,4,0,0,0,0,0,1],
+[1,0,0,0,0,2,0,0,0,0,0,1],
+[1,0,0,0,0,3,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
@@ -35,25 +37,306 @@ var tablero = [
 
 var pieza;
 
+var fichaGrafico= [
+    [
+        [
+        [0,0,0,0],
+        [0,1,1,0],
+        [0,1,1,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,0],
+        [0,1,1,0],
+        [0,1,1,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,0],
+        [0,1,1,0],
+        [0,1,1,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,0],
+        [0,1,1,0],
+        [0,1,1,0],
+        [0,0,0,0]
+        ]
+    ],
+    
+    [
+        [
+        [0,0,0,0],
+        [2,2,2,2],
+        [0,0,0,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,2,0],
+        [0,0,2,0],
+        [0,0,2,0],
+        [0,0,2,0]
+        ],
+    
+        [
+        [0,0,0,0],
+        [2,2,2,2],
+        [0,0,0,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,2,0],
+        [0,0,2,0],
+        [0,0,2,0],
+        [0,0,2,0]
+        ]
+    
+    ],
+    
+    [
+        [
+        [0,0,0,0],
+        [0,0,3,3],
+        [0,3,3,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,3,0],
+        [0,0,3,3],
+        [0,0,0,3],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,0],
+        [0,0,3,3],
+        [0,3,3,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,3,0],
+        [0,0,3,3],
+        [0,0,0,3],
+        [0,0,0,0]
+        ]
+    
+    ],
+    
+    [
+        [
+        [0,0,0,0],
+        [0,4,4,0],
+        [0,0,4,4],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,4],
+        [0,0,4,4],
+        [0,0,4,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,0],
+        [0,4,4,0],
+        [0,0,4,4],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,4],
+        [0,0,4,4],
+        [0,0,4,0],
+        [0,0,0,0]
+        ]
+    
+    ],
+    
+    [
+        [
+        [0,0,0,0],
+        [0,5,5,5],
+        [0,5,0,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,5,0],
+        [0,0,5,0],
+        [0,0,5,5],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,0,5],
+        [0,5,5,5],
+        [0,0,0,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,5,5,0],
+        [0,0,5,0],
+        [0,0,5,0],
+        [0,0,0,0]
+        ]
+    
+    ],
+    
+    [
+        [
+        [0,0,0,0],
+        [0,6,6,6],
+        [0,0,0,6],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,6,6],
+        [0,0,6,0],
+        [0,0,6,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,6,0,0],
+        [0,6,6,6],
+        [0,0,0,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,6,0],
+        [0,0,6,0],
+        [0,6,6,0],
+        [0,0,0,0]
+        ]
+    ],
+    
+    
+    [
+        [
+        [0,0,0,0],
+        [0,7,7,7],
+        [0,0,7,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,7,0],
+        [0,0,7,7],
+        [0,0,7,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,7,0],
+        [0,7,7,7],
+        [0,0,0,0],
+        [0,0,0,0]
+        ],
+    
+        [
+        [0,0,7,0],
+        [0,7,7,0],
+        [0,0,7,0],
+        [0,0,0,0]
+        ]
+    ]
+    ];
+
+//COLORES
+var rojo = '#FF0000';
+var morado = '#800080';
+var naranja = '#FF8C00';
+var amarillo = '#FFD700';
+var verde = '#008000';
+var cyan = '#00CED1';
+var azul = '#0000CD';    
+
+
 var objPieza = function(){
     this.x = 0;
     this.y = 0;
-    console.log('pieza');
+    this.angulo =0;
+    this.tipo = 0;
+
+    this.dibuja = function(){
+        for(py=0;py<4;py++){
+            for(px=0;px<4;px++){
+                if(fichaGrafico[this.tipo][this.angulo][px][py]!=0){
+
+                        if(fichaGrafico[this.tipo][this.angulo][px][py]==0) ctx.fillStyle = '#123123';
+                        if(fichaGrafico[this.tipo][this.angulo][px][py]==1) ctx.fillStyle = rojo;
+                        if(fichaGrafico[this.tipo][this.angulo][px][py]==2) ctx.fillStyle = naranja;
+                        if(fichaGrafico[this.tipo][this.angulo][px][py]==3) ctx.fillStyle = amarillo;
+                        if(fichaGrafico[this.tipo][this.angulo][px][py]==4) ctx.fillStyle = verde;
+                        if(fichaGrafico[this.tipo][this.angulo][px][py]==5) ctx.fillStyle = cyan;
+                        if(fichaGrafico[this.tipo][this.angulo][px][py]==6) ctx.fillStyle = azul;
+
+
+                    ctx.fillRect((this.x+px)*anchoF,(this.y +py)*altoF,anchoF,altoF);
+                }
+            }
+        }
+    }
+
+    this.rotar = function(){
+        console.log('rotar');
+    }
+    this.abajo = function(){
+        console.log('abajo');
+    }
+    this.izquierda = function(){
+        console.log('izquierda');
+    }
+    this.derecha = function(){
+        console.log('derecha');
+    }
+}
+
+function dibujaTablero(){
+    for(py=0;py<altoTablero;py++){
+        for(px=0;px<anchotablero;px++){
+            if(tablero[px][py]!=0){
+
+                    if(tablero[px][py]==0) ctx.fillStyle = '#123123';
+                    if(tablero[px][py]==1) ctx.fillStyle = rojo;
+                    if(tablero[px][py]==2) ctx.fillStyle = naranja;
+                    if(tablero[px][py]==3) ctx.fillStyle = amarillo;
+                    if(tablero[px][py]==4) ctx.fillStyle = verde;
+                    if(tablero[px][py]==5) ctx.fillStyle = cyan;
+                    if(tablero[px][py]==6) ctx.fillStyle = azul;
+
+
+                ctx.fillRect((px)*anchoF,(py)*altoF,anchoF,altoF);
+            }
+        }
+    }
 }
 
 function inicializaTeclado(){
     document.addEventListener('keydown',function(tecla){
         if(tecla.keyCode == 38){
-            console.log('arriba');
+            pieza.rotar()
         }
         if(tecla.keyCode == 40){
-            console.log('abajo');
+            pieza.abajo()
         }
         if(tecla.keyCode == 37){
-            console.log('izquierda');
+            pieza.izquierda()
         }
         if(tecla.keyCode == 39){
-            console.log('derecha');
+            pieza.derecha();
         }
     })
 }
@@ -75,13 +358,15 @@ function init(){
 }
 
 function borrarCanvas(){
-    canvas.style.width = anchoCanvas;
-    canvas.style.height =altoCanvas;
+    canvas.width = anchoCanvas;
+    canvas.height =altoCanvas;
 }
 
 
 function principal(){
     console.log('x');
-
+    
     borrarCanvas();
+    pieza.dibuja();
+    dibujaTablero();
 }
