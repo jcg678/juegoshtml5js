@@ -267,21 +267,21 @@ var azul = '#0000CD';
 var objPieza = function(){
     this.x = 0;
     this.y = 0;
-    this.angulo =0;
-    this.tipo = 0;
+    this.angulo =1;
+    this.tipo = 2;
 
     this.dibuja = function(){
         for(py=0;py<4;py++){
             for(px=0;px<4;px++){
-                if(fichaGrafico[this.tipo][this.angulo][px][py]!=0){
+                if(fichaGrafico[this.tipo][this.angulo][py][px]!=0){
 
-                        if(fichaGrafico[this.tipo][this.angulo][px][py]==0) ctx.fillStyle = '#123123';
-                        if(fichaGrafico[this.tipo][this.angulo][px][py]==1) ctx.fillStyle = rojo;
-                        if(fichaGrafico[this.tipo][this.angulo][px][py]==2) ctx.fillStyle = naranja;
-                        if(fichaGrafico[this.tipo][this.angulo][px][py]==3) ctx.fillStyle = amarillo;
-                        if(fichaGrafico[this.tipo][this.angulo][px][py]==4) ctx.fillStyle = verde;
-                        if(fichaGrafico[this.tipo][this.angulo][px][py]==5) ctx.fillStyle = cyan;
-                        if(fichaGrafico[this.tipo][this.angulo][px][py]==6) ctx.fillStyle = azul;
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==0) ctx.fillStyle = '#123123';
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==1) ctx.fillStyle = rojo;
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==2) ctx.fillStyle = naranja;
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==3) ctx.fillStyle = amarillo;
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==4) ctx.fillStyle = verde;
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==5) ctx.fillStyle = cyan;
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==6) ctx.fillStyle = azul;
 
 
                     ctx.fillRect((this.x+px)*anchoF,(this.y +py)*altoF,anchoF,altoF);
@@ -307,15 +307,15 @@ var objPieza = function(){
 function dibujaTablero(){
     for(py=0;py<altoTablero;py++){
         for(px=0;px<anchotablero;px++){
-            if(tablero[px][py]!=0){
+            if(tablero[py][px]!=0){
 
-                    if(tablero[px][py]==0) ctx.fillStyle = '#123123';
-                    if(tablero[px][py]==1) ctx.fillStyle = rojo;
-                    if(tablero[px][py]==2) ctx.fillStyle = naranja;
-                    if(tablero[px][py]==3) ctx.fillStyle = amarillo;
-                    if(tablero[px][py]==4) ctx.fillStyle = verde;
-                    if(tablero[px][py]==5) ctx.fillStyle = cyan;
-                    if(tablero[px][py]==6) ctx.fillStyle = azul;
+                    if(tablero[py][px]==0) ctx.fillStyle = '#123123';
+                    if(tablero[py][px]==1) ctx.fillStyle = rojo;
+                    if(tablero[py][px]==2) ctx.fillStyle = naranja;
+                    if(tablero[py][px]==3) ctx.fillStyle = amarillo;
+                    if(tablero[py][px]==4) ctx.fillStyle = verde;
+                    if(tablero[py][px]==5) ctx.fillStyle = cyan;
+                    if(tablero[py][px]==6) ctx.fillStyle = azul;
 
 
                 ctx.fillRect((px)*anchoF,(py)*altoF,anchoF,altoF);
