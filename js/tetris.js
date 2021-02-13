@@ -7,10 +7,12 @@ var anchoCanvas = 400;
 var altoCanvas = 640;
 
 var anchotablero = 10;
-var altoTablero = 16;
+var altoTablero = 20;
 
 var anchoF = 40;
 var altoF = 40;
+
+var margenSuperior = 4;
 
 
 
@@ -19,19 +21,23 @@ var tablero = [
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,4,0,0,0,0,0,1],
-[1,0,0,0,0,2,0,0,0,0,0,1],
-[1,0,0,0,0,2,0,0,0,0,0,1],
-[1,0,0,0,0,3,0,0,0,0,0,1],
-[1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,2,0,0,0,0,0,0,1],
-[1,0,0,0,0,4,0,0,0,0,0,1],
-[1,0,0,0,0,2,0,0,0,0,0,1],
-[1,0,0,0,0,3,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],    
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,3,0,0,0,0,1],
+[1,0,0,0,0,0,3,0,0,0,0,1],
+[1,0,0,0,2,2,3,0,0,0,0,1],
+[1,0,0,0,2,2,3,0,0,0,0,1],
 [1,1,1,1,1,1,1,1,1,1,1,1]
 ];
 
@@ -267,8 +273,28 @@ var azul = '#0000CD';
 var objPieza = function(){
     this.x = 0;
     this.y = 0;
-    this.angulo =1;
+    this.angulo =0;
     this.tipo = 2;
+    this.retraso = 50;
+    this.fotograma = 0;
+
+    this.nueva = function(){
+        this.tipo = Math.floor(Math.random()*7);
+        this.y = 5;
+        this.x = 4;
+
+    };
+
+    this.caer = function(){
+        if(this.fotograma < this.retraso){
+            this.fotograma++;
+        }else{
+            this.fotograma =0;
+            this.y++;
+        }
+        
+        
+    }
 
     this.dibuja = function(){
         for(py=0;py<4;py++){
@@ -284,29 +310,41 @@ var objPieza = function(){
                         if(fichaGrafico[this.tipo][this.angulo][py][px]==6) ctx.fillStyle = azul;
 
 
-                    ctx.fillRect((this.x+px)*anchoF,(this.y +py)*altoF,anchoF,altoF);
+                    ctx.fillRect((this.x+px-1)*anchoF,(this.y +py -margenSuperior)*altoF,anchoF,altoF);
                 }
             }
         }
     }
 
     this.rotar = function(){
-        console.log('rotar');
+        if(this.angulo<3){
+            this.angulo++;
+        }else{
+            this.angulo =0;
+        }
     }
+
+
+    this.colision = function(){
+
+    }
+
     this.abajo = function(){
-        console.log('abajo');
+        this.y++;
     }
     this.izquierda = function(){
-        console.log('izquierda');
+        this.x--;
     }
     this.derecha = function(){
-        console.log('derecha');
+        this.x++;
     }
+
+    this.nueva();
 }
 
 function dibujaTablero(){
-    for(py=0;py<altoTablero;py++){
-        for(px=0;px<anchotablero;px++){
+    for(py=margenSuperior;py<altoTablero;py++){
+        for(px=1;px<anchotablero;px++){
             if(tablero[py][px]!=0){
 
                     if(tablero[py][px]==0) ctx.fillStyle = '#123123';
@@ -318,7 +356,7 @@ function dibujaTablero(){
                     if(tablero[py][px]==6) ctx.fillStyle = azul;
 
 
-                ctx.fillRect((px)*anchoF,(py)*altoF,anchoF,altoF);
+                ctx.fillRect((px-1)*anchoF,(py-margenSuperior)*altoF,anchoF,altoF);
             }
         }
     }
@@ -368,5 +406,6 @@ function principal(){
     
     borrarCanvas();
     pieza.dibuja();
+    pieza.caer();
     dibujaTablero();
 }
