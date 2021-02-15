@@ -34,12 +34,37 @@ var tablero = [
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
 [1,0,0,0,0,0,0,0,0,0,0,1],
-[1,0,0,0,0,0,3,0,0,0,0,1],
-[1,0,0,0,0,0,3,0,0,0,0,1],
-[1,0,0,0,2,2,3,0,0,0,0,1],
-[1,0,0,0,2,2,3,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,0,0,1],
 [1,1,1,1,1,1,1,1,1,1,1,1]
 ];
+
+
+var tableroCopia = [
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],    
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
 
 var pieza;
 
@@ -267,8 +292,17 @@ var naranja = '#FF8C00';
 var amarillo = '#FFD700';
 var verde = '#008000';
 var cyan = '#00CED1';
-var azul = '#0000CD';    
+var azul = '#0000CD';
+var morado = '#57065E';    
 
+function reseteaTablero(){
+    console.log('resetea');
+    for(py=0;py<21;py++){
+        for(px=0;px<12;px++){
+            tablero[py][px]=tableroCopia[py][px];
+        }
+    }
+}
 
 var objPieza = function(){
     this.x = 0;
@@ -285,6 +319,34 @@ var objPieza = function(){
 
     };
 
+    this.compruebaSiPierde = function(){
+        var pierde = false;
+        for(px=1;px<anchotablero+1;px++){
+            if(tablero[2][px]>0){
+                pierde = true;
+            }
+        }
+        return pierde;
+    }
+
+    this.limpia = function(){
+        var filaCompleta;
+        for(py = margenSuperior; py<altoTablero;py++){
+            filaCompleta = true;
+            for(px = 1; px<anchotablero+1;px++){
+                if(tablero[py][px]==0){
+                    filaCompleta = false;
+                }
+            }
+
+            if(filaCompleta){
+                for(px=1;px<anchotablero+1;px++){
+                    tablero[py][px]=0;
+                }
+            }
+        }
+    }
+
     this.caer = function(){
         if(this.fotograma < this.retraso){
             this.fotograma++;
@@ -294,8 +356,12 @@ var objPieza = function(){
                 this.y++;
                 
             }else{
-               this.fijar(); 
-               this.nueva();     
+               this.fijar();
+               this.limpia(); 
+               this.nueva();   
+               if(this.compruebaSiPierde()){
+                   reseteaTablero();
+               }  
             }
             this.fotograma =0;
 
@@ -326,6 +392,7 @@ var objPieza = function(){
                         if(fichaGrafico[this.tipo][this.angulo][py][px]==4) ctx.fillStyle = verde;
                         if(fichaGrafico[this.tipo][this.angulo][py][px]==5) ctx.fillStyle = cyan;
                         if(fichaGrafico[this.tipo][this.angulo][py][px]==6) ctx.fillStyle = azul;
+                        if(fichaGrafico[this.tipo][this.angulo][py][px]==7) ctx.fillStyle = morado;
 
 
                     ctx.fillRect((this.x+px-1)*anchoF,(this.y +py -margenSuperior)*altoF,anchoF,altoF);
@@ -381,7 +448,7 @@ var objPieza = function(){
 
 function dibujaTablero(){
     for(py=margenSuperior;py<altoTablero;py++){
-        for(px=1;px<anchotablero;px++){
+        for(px=1;px<anchotablero+1;px++){
             if(tablero[py][px]!=0){
 
                     if(tablero[py][px]==0) ctx.fillStyle = '#123123';
@@ -391,6 +458,7 @@ function dibujaTablero(){
                     if(tablero[py][px]==4) ctx.fillStyle = verde;
                     if(tablero[py][px]==5) ctx.fillStyle = cyan;
                     if(tablero[py][px]==6) ctx.fillStyle = azul;
+                    if(tablero[py][px]==7) ctx.fillStyle = morado;
 
 
                 ctx.fillRect((px-1)*anchoF,(py-margenSuperior)*altoF,anchoF,altoF);
@@ -439,7 +507,7 @@ function borrarCanvas(){
 
 
 function principal(){
-    console.log('x');
+
     
     borrarCanvas();
     pieza.dibuja();
