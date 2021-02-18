@@ -91,6 +91,21 @@ var malo = function(x,y){
     this.retraso =50;
     this.fotograma = 0;
 
+    this.getCoordenadas = function(){
+        var coordenadas = [];
+
+        coordenadas.push(this.x);
+        coordenadas.push(this.y);
+
+        return coordenadas;
+    }
+
+    this.setCoordenadas = function(x,y){
+        this.x = x;
+        this.y = y;
+    }
+
+
     this.direccion = Math.floor(Math.random()*4);
     console.log('enemigo creado');
 
@@ -158,6 +173,20 @@ var jugador = function(){
     this.color = '#820c01';
     this.velocidad=1;
     this.jugador = false;
+
+    this.getCoordenadas = function(){
+        var coordenadas = [];
+
+        coordenadas.push(this.x);
+        coordenadas.push(this.y);
+
+        return coordenadas;
+    }
+
+    this.setCoordenadas = function(x,y){
+        this.x = x;
+        this.y = y;
+    }
 
     this.dibuja = function(){
         ctx.fillStyle = this.color;
@@ -247,6 +276,53 @@ var jugador = function(){
 
 var protagonista;
 
+function guardarPartida(){
+    var coordenadasJ = [];
+    var coordenadasE0 = [];
+    var coordenadasE1 = [];
+    var coordenadasE2 = [];
+    coordenadasJ = protagonista.getCoordenadas();
+    coordenadasE0 = enemigo[0].getCoordenadas();
+    coordenadasE1 = enemigo[1].getCoordenadas();
+    coordenadasE2 = enemigo[2].getCoordenadas();
+    
+    localStorage.setItem("jx",coordenadasJ[0]);
+    localStorage.setItem("jy",coordenadasJ[1]);
+
+    localStorage.setItem("e0x",coordenadasE0[0]);
+    localStorage.setItem("e0y",coordenadasE0[1]);
+
+    localStorage.setItem("e1x",coordenadasE1[0]);
+    localStorage.setItem("e1y",coordenadasE1[1]);
+
+    localStorage.setItem("e2x",coordenadasE2[0]);
+    localStorage.setItem("e2y",coordenadasE2[1]);
+
+
+    console.log('Guardando Partida');
+}
+
+function cargarpartida(){
+    var jx,jy,e0x,e0y,e1x,e1y,e2x,eyx;
+
+    jx = localStorage.getItem("jx");
+    jy = localStorage.getItem("jy");
+
+    e0x = localStorage.getItem("e0x");
+    e0y = localStorage.getItem("e0y");
+
+    e1x = localStorage.getItem("e1x");
+    e1y = localStorage.getItem("e1y");
+    
+    e2x = localStorage.getItem("e2x");
+    e2y = localStorage.getItem("e2y");
+
+    protagonista.setCoordenadas(jx,jy);
+    enemigo[0].setCoordenadas(e0x,e0y);
+    enemigo[1].setCoordenadas(e1x,e1y);
+    enemigo[2].setCoordenadas(e2x,e2y);
+}
+
 function init(){
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
@@ -282,6 +358,21 @@ function init(){
         //rigth
         if(tecla.keyCode == 39){
             protagonista.derecha();
+        }
+
+        if(tecla.keyCode == 71){
+            //guardar G
+            guardarPartida();
+           
+        }
+
+        if(tecla.keyCode == 67){
+            //cargar C
+            cargarpartida();
+        }
+
+        if(tecla.keycode == 66){
+            //borrar b
         }
     
     });
