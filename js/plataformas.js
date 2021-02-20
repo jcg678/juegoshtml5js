@@ -35,7 +35,9 @@ var escenario = [
       this.friccion = 0.1;
 
       this.salto = 10;
-      this.velocidad = 0;
+      this.velocidad = 0.2;
+
+      this.velocidadMax = 5;
 
       this.suelo = false;
 
@@ -58,10 +60,54 @@ var escenario = [
           }
       }
 
+      this.derecha = function(){
+        this.pulsaDerecha = true;
+      }
+
+      this.izquierda = function(){
+        this.pulsaIzquierda = true;
+      }
+
+      this.sueltaDerecha = function(){
+        this.pulsaDerecha = false;
+      }
+
+      this.sueltaIzquierda = function(){
+        this.pulsaIzquierda = false;
+      }
 
       this.fisica = function(){
         if(this.suelo == false){
             this.vy += this.gravedad;
+        }
+
+        if(this.pulsaDerecha == true && (this.vx <= this.velocidadMax)){
+          console.log('derecha on');
+          this.vx += this.velocidad;
+        }
+
+        if(this.pulsaIzquierda == true && (this.vx >= 0-(this.velocidadMax))){
+          console.log('izquierda on');
+          this.vx -= this.velocidad;
+        }
+
+        //friccion
+        if(this.vx < 0){
+          this.vx += this.friccion;
+    
+          //si nos pasamos, paramos
+          if(this.vx >0){
+            this.vx = 0;
+          }
+        }
+    
+        //Derecha
+        if(this.vx > 0){
+          this.vx -= this.friccion;
+    
+          if(this.vx < 0){
+            this.vx = 0;
+          }
         }
 
         if(this.vy > 0){
@@ -70,8 +116,9 @@ var escenario = [
                 this.vy = 0;    
             }
         }
-
+        //console.log(this.vx);
         this.y += this.vy;
+        this.x += this.vx;
         
       }      
 
@@ -116,11 +163,13 @@ var escenario = [
         }
     
         if(tecla.keyCode == 37){
-          //protagonista.izquierda();
+          console.log('pulsa izquierda');
+          protagonista.izquierda();
         }
     
         if(tecla.keyCode == 39){
-          //protagonista.derecha();
+          console.log('pulsa drecha');
+          protagonista.derecha();
         }
     
       });
@@ -128,11 +177,11 @@ var escenario = [
       document.addEventListener('keyup',function(tecla){
 
         if(tecla.keyCode == 37){
-          //protagonista.izquierdaSuelta();
+          protagonista.sueltaIzquierda();
         }
     
         if(tecla.keyCode == 39){
-          //protagonista.derechaSuelta();
+          protagonista.sueltaDerecha();
         }
     
       });
