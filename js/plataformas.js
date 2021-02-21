@@ -208,12 +208,56 @@ var escenario = [
     }
   }
 
+function creaBloque(x,y){
+  var xBloque = parseInt(x/anchoF);
+  var yBloque = parseInt(y/altoF);
+
+  var colorBloque = escenario[yBloque][xBloque];
+
+  if(colorBloque == 0){
+    colorBloque = 2
+  }else{
+    colorBloque = 0;
+  }
+
+  escenario[yBloque][xBloque] = colorBloque;
+}
+
+function dibujaBloque(x,y){
+  ctx.fillStyle = "#777777";
+  ctx.fillRect(parseInt(x/anchoF)*anchoF,parseInt(y/altoF)*altoF,anchoF,altoF);
+}
+
+var ratonX = 0;
+var ratonY = 0;
+
+function clickRaton(objeto){
+  console.log('click')
+}
+
+function sueltaRaton(objeto){
+  creaBloque(ratonX,ratonY);
+  console.log("suelta");
+}
+
+function posicionRaton(objeto){
+  ratonX = objeto.pageX;
+  ratonY = objeto.pageY;
+
+  console.log(ratonX+ " - " + ratonY);
+}
 
   function init(){
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
 
     protagonista = new jugador();
+
+    canvas.addEventListener('mousedown', clickRaton,false);
+    canvas.addEventListener('mouseup', sueltaRaton,false);
+    canvas.addEventListener('mousemove', posicionRaton,false);
+
+    
 
     document.addEventListener('keydown',function(tecla){
 
@@ -260,5 +304,6 @@ var escenario = [
   function principal(){
     borraCanvas();
     dibujaEscenario();
+    dibujaBloque(ratonX,ratonY);
     protagonista.dibuja();
   }
