@@ -31,10 +31,10 @@ var escenario = [
       this.vy = 0;
       this.vx = 0;
 
-      this.gravedad = 0.5;
+      this.gravedad = 0.2;
       this.friccion = 0.1;
 
-      this.salto = 10;
+      this.salto = 6;
       this.velocidad = 0.2;
 
       this.velocidadMax = 5;
@@ -76,9 +76,35 @@ var escenario = [
         this.pulsaIzquierda = false;
       }
 
+      this.correccion = function(lugar){
+        //abajo
+        if(lugar == 1){
+          this.y = parseInt(this.y/altoF)*altoF;
+        }
+
+        if(lugar == 2){
+          this.y = parseInt((this.y/altoF)+1)*altoF;
+        }
+
+        //iz
+        if(lugar == 3){
+          this.x = parseInt(this.x/anchoF)*anchoF;
+        }
+
+        //derecha
+        if(lugar == 4){
+          this.x = parseInt((this.x/anchoF)+1)*anchoF;
+        }
+
+      }
+
       this.fisica = function(){
         if(this.suelo == false){
-            this.vy += this.gravedad;
+          this.vy += this.gravedad;
+        }
+        else{
+          this.correccion(1);
+          this.vy = 0;
         }
 
         if(this.pulsaDerecha == true && (this.vx <= this.velocidadMax)){
@@ -110,15 +136,48 @@ var escenario = [
           }
         }
 
-        if(this.vy > 0){
-            if(this.colision(this.x, this.y + altoF)==true){
+        if(this.vx >0){
+          if((this.colision(this.x + anchoF + this.vx, this.y+1)==true)||(this.colision(this.x + anchoF + this.vx, this.y+altoF-1)==true)){
+            if(this.x != parseInt(this.x/anchoF)*anchoF){
+              this.correccion(4);
+            }
+            this.vx =0;
+          }
+        }
+
+        if(this.vx <0){
+          if((this.colision(this.x + this.vx, this.y+1)==true)||(this.colision(this.x + this.vx, this.y+altoF-1)==true)){
+            if(this.x != parseInt(this.x/anchoF)*anchoF){
+              this.correccion(3);
+            }
+            this.vx =0;
+          }
+        }
+
+        this.y += this.vy;
+        this.x += this.vx;
+
+        //colision techo
+        if(this.vy <0){
+          if((this.colision(this.x+1,this.y)==true)||(this.colision(this.x + anchoF-1,this.y)==true)){
+            this.vy = 0;
+            this.correccion(2);
+          }
+        }
+
+
+        //colision suelo
+        if(this.vy >= 0){
+            if((this.colision(this.x + 1, this.y + altoF)==true)||((this.colision(this.x + anchoF - 1, this.y + altoF)==true))){
                 this.suelo = true;
-                this.vy = 0;    
+                this.vy = 0;
+                this.correccion(1);    
+            }else{
+              this.suelo = false;
             }
         }
         //console.log(this.vx);
-        this.y += this.vy;
-        this.x += this.vx;
+
         
       }      
 
